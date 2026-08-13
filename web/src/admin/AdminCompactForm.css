@@ -1,0 +1,104 @@
+form.admin-compact-form {
+  display: grid;
+  gap: 2px;
+  padding: 0.35rem 0.65rem;
+  margin: 0;
+}
+
+form.admin-compact-form h2 {
+  margin: 0 0 2px;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+form.admin-compact-form label {
+  display: grid;
+  gap: 0;
+  margin: 0 0 2px;
+  font-size: 0.9rem;
+  line-height: 1.15;
+}
+
+form.admin-compact-form input:not([type='checkbox']):not([type='radio']):not([type='file']),
+form.admin-compact-form select,
+form.admin-compact-form textarea {
+  width: 100%;
+  margin: 0;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  min-height: 1.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+}
+
+form.admin-compact-form textarea {
+  min-height: 2.25rem;
+  resize: vertical;
+}
+
+form.admin-compact-form .image-field-group {
+  display: grid;
+  gap: 2px;
+}
+
+form.admin-compact-form .image-source-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+form.admin-compact-form .field-hint {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.15;
+}
+
+form.admin-compact-form .image-preview {
+  margin: 0;
+}
+
+form.admin-compact-form .form-actions {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 2px;
+}
+
+form.admin-compact-form .form-actions button {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+form.admin-compact-form .checkbox-row,
+form.admin-compact-form .radio-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+form.admin-compact-form .checkbox-row input,
+form.admin-compact-form .radio-row input {
+  width: auto;
+  min-height: auto;
+  padding: 0;
+}
+
+form.admin-compact-form-tight {
+  gap: 0;
+  padding: 0.25rem 0.5rem;
+}
+
+form.admin-compact-form-tight h2 {
+  margin: 0 0 1px;
+}
+
+form.admin-compact-form-tight label {
+  margin: 0;
+}
+
+form.admin-compact-form-tight .form-actions {
+  margin-top: 1px;
+}

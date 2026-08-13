@@ -1,0 +1,41 @@
+.admin-table.admin-table-resizable {
+  table-layout: fixed;
+  width: 100%;
+  min-width: max-content;
+}
+
+.admin-table-resizable-header {
+  position: relative;
+}
+
+.admin-table-col-resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  width: 8px;
+  height: 100%;
+  transform: translateX(50%);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.admin-table-col-resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 3px;
+  width: 1px;
+  background: #e2e8f0;
+  opacity: 1;
+}
+
+body.admin-table-col-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+body.admin-table-col-resizing * {
+  cursor: col-resize !important;
+}

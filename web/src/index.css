@@ -1,0 +1,142 @@
+:root {
+  font-family: Inter, Segoe UI, system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #e8ecf4;
+  --client-bg-solid: #0b0f19;
+  --client-surface-solid: #162238;
+  --client-bg-gradient:
+    radial-gradient(circle at 14% 10%, rgba(88, 81, 219, 0.16), transparent 38%),
+    radial-gradient(circle at 86% 88%, rgba(37, 99, 235, 0.12), transparent 36%),
+    linear-gradient(165deg, #141d33 0%, #0b0f19 46%, #090d16 100%);
+  --client-surface-gradient:
+    linear-gradient(155deg, rgba(88, 81, 219, 0.16) 0%, rgba(88, 81, 219, 0) 36%),
+    linear-gradient(145deg, #1d3150 0%, #162238 54%, #111b2d 100%);
+  --client-surface-inset:
+    linear-gradient(160deg, #121c30 0%, #0d1322 100%);
+  --client-scrollbar-track: #0b0f19;
+  --client-scrollbar-thumb: #5851db;
+  --client-scrollbar-thumb-hover: #6d66e8;
+  background: var(--client-bg-gradient);
+  background-color: var(--client-bg-solid);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--client-bg-gradient);
+  background-color: var(--client-bg-solid);
+}
+
+a {
+  color: #8b85ff;
+  text-decoration: none;
+}
+
+.admin-topbar a {
+  text-decoration: none;
+}
+
+.admin-topbar a:hover {
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background: #5851db;
+  color: white;
+  padding: 0.65rem 1rem;
+}
+
+.admin-shell button:not(.sortable-header):not(.admin-table-refresh):not(.admin-contact-message-header) {
+  background: #dc2626;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(88, 81, 219, 0.28);
+  border-radius: 8px;
+  background: var(--client-surface-inset);
+  background-color: var(--client-bg-solid);
+  color: #e8ecf4;
+}
+
+.admin-shell input,
+.admin-shell select,
+.admin-shell textarea {
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #1f2937;
+}
+
+label {
+  display: grid;
+}
+
+.checkout-form:not(.admin-compact-form) label {
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.checkout-form:not(.admin-compact-form) input,
+.checkout-form:not(.admin-compact-form) select,
+.checkout-form:not(.admin-compact-form) textarea {
+  padding: 0.65rem 0.75rem;
+}
+
+.app-shell,
+.app-shell * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--client-scrollbar-thumb) var(--client-scrollbar-track);
+}
+
+.app-shell ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.app-shell ::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #121c30 0%, var(--client-scrollbar-track) 100%);
+  border-radius: 999px;
+}
+
+.app-shell ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--client-scrollbar-thumb-hover) 0%, var(--client-scrollbar-thumb) 100%);
+  border: 2px solid var(--client-scrollbar-track);
+  border-radius: 999px;
+}
+
+.app-shell ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7b74ee 0%, var(--client-scrollbar-thumb-hover) 100%);
+}
+
+.app-shell ::-webkit-scrollbar-corner {
+  background: var(--client-scrollbar-track);
+}

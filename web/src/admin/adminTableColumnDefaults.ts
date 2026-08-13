@@ -1,0 +1,7 @@
+export const ADMIN_CATEGORIES_COLUMN_WIDTHS = [40, 200, 160, 120, 100, 104] as const;
+
+export const ADMIN_SUBCATEGORIES_COLUMN_WIDTHS = [40, 180, 200, 160, 90, 100, 104] as const;
+
+export const ADMIN_PRODUCTS_COLUMN_WIDTHS = [40, 144, 72, 165, 165, 130, 48, 106, 106, 76, 60, 60, 60, 60, 30, 104] as const;
+
+export const ADMIN_TABLE_MIN_COLUMN_WIDTH = 30;

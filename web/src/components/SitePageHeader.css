@@ -1,0 +1,196 @@
+.site-page-header {
+  position: relative;
+  overflow: hidden;
+  padding: 0.65rem 1.25rem 1.15rem;
+  color: #fff;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(88, 81, 219, 0.28), transparent 38%),
+    radial-gradient(circle at 82% 18%, rgba(59, 130, 246, 0.16), transparent 34%),
+    radial-gradient(circle at 62% 78%, rgba(88, 81, 219, 0.12), transparent 30%),
+    linear-gradient(180deg, #162238 0%, #0b0f19 100%);
+  border-bottom: 1px solid rgba(88, 81, 219, 0.22);
+}
+
+.site-page-header--has-image {
+  background:
+    linear-gradient(180deg, rgba(22, 34, 56, 0.88) 0%, rgba(11, 15, 25, 0.92) 100%),
+    var(--site-page-header-image) center / cover no-repeat;
+}
+
+.site-page-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.site-page-header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.site-page-header-brand:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.site-page-header-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.site-page-header-nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(139, 133, 255, 0.35);
+  border-radius: 0.45rem;
+  background: rgba(22, 34, 56, 0.55);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.site-page-header-nav-link:hover {
+  border-color: rgba(139, 133, 255, 0.65);
+  background: rgba(88, 81, 219, 0.22);
+  color: #fff;
+  text-decoration: none;
+}
+
+.site-page-header-nav-link.active {
+  border-color: rgba(139, 133, 255, 0.75);
+  background: rgba(88, 81, 219, 0.35);
+  box-shadow: 0 0 14px rgba(88, 81, 219, 0.25);
+  color: #fff;
+}
+
+.site-page-header-copy {
+  max-width: 42rem;
+  margin-top: 0.85rem;
+}
+
+.site-page-header-copy h1 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.1rem, 2.2vw, 1.55rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.site-page-header-copy p {
+  margin: 0;
+  max-width: 36rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.catalog-brand-mark {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 0.2rem;
+  background: #5851db;
+  box-shadow: 0 0 12px rgba(88, 81, 219, 0.35);
+}
+
+.site-brand-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 0.2rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.catalog-cart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.45rem;
+  background: #5851db;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 0 18px rgba(88, 81, 219, 0.35);
+}
+
+.catalog-cart-btn:hover {
+  background: #6d66e8;
+  color: #fff;
+  text-decoration: none;
+}
+
+.catalog-cart-wrap {
+  position: relative;
+}
+
+.catalog-cart-toast {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  z-index: 20;
+  min-width: 12rem;
+  max-width: 18rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(139, 133, 255, 0.45);
+  border-radius: 0.45rem;
+  background: rgba(22, 34, 56, 0.96);
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 18px rgba(88, 81, 219, 0.2);
+  animation: catalog-cart-toast-in 0.2s ease-out;
+  pointer-events: none;
+}
+
+.catalog-cart-toast::before {
+  content: '';
+  position: absolute;
+  top: -0.35rem;
+  right: 1.1rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  background: rgba(22, 34, 56, 0.96);
+  border-top: 1px solid rgba(139, 133, 255, 0.45);
+  border-left: 1px solid rgba(139, 133, 255, 0.45);
+  transform: rotate(45deg);
+}
+
+@keyframes catalog-cart-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .site-page-header {
+    padding: 0.55rem 1rem 0.9rem;
+  }
+
+  .site-page-header-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .site-page-header-nav {
+    justify-content: flex-start;
+  }
+}
