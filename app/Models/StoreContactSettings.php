@@ -30,9 +30,9 @@ class StoreContactSettings extends Model
             'id'             => self::SINGLETON_ID,
             'store_name'     => 'Legoparts',
             'email'          => 'hello@legoparts.local',
-            'phone'          => '+7 495 010-20-00',
-            'address'        => 'ул. Кирпичная, 42, г. Конструктив',
-            'business_hours' => 'Пн–Пт 9:00–18:00, Сб 10:00–14:00',
+            'phone'          => '+375 44 7972716',
+            'address'        => 'г. Минск',
+            'business_hours' => '',
             'updated_at'     => now(),
         ];
     }
