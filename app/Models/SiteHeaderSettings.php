@@ -30,9 +30,9 @@ class SiteHeaderSettings extends Model
         return [
             'id'           => self::SINGLETON_ID,
             'brand_name'   => 'Legoparts',
-            'hero_title'   => 'Каждая деталь. Каждый цвет.',
+            'hero_title'   => 'Скопилось много деталей, которые ищут новых хозяем!',
             'hero_subtitle' => 'Обращаем ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой.',
-            'tab_title'    => 'Legoparts — магазин деталей LEGO',
+            'tab_title'    => 'Legoparts — Распродажа Б.У. деталей LEGO',
             'updated_at'   => now(),
         ];
     }
