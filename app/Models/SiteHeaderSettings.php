@@ -31,7 +31,7 @@ class SiteHeaderSettings extends Model
             'id'           => self::SINGLETON_ID,
             'brand_name'   => 'Legoparts',
             'hero_title'   => 'Каждая деталь. Каждый цвет.',
-            'hero_subtitle' => 'Крупнейший каталог отдельных элементов LEGO Education EV3 — от одиночных деталей до наборов для робототехники.',
+            'hero_subtitle' => 'Обращаем ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой.',
             'tab_title'    => 'Legoparts — магазин деталей LEGO',
             'updated_at'   => now(),
         ];
