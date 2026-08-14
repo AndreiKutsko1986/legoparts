@@ -23,7 +23,7 @@ export function NoColorIcon({ className = '', title }: NoColorIconProps) {
 
 type ProductColorSwatchProps = {
   colorId?: ProductColorId | null;
-  size?: 'sm' | 'md';
+  size?: 'xs' | 'sm' | 'md';
   title?: string;
   className?: string;
   showNoColorWhenUnset?: boolean;

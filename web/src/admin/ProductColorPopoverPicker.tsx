@@ -104,7 +104,7 @@ export function ProductColorPopoverPicker({
         aria-expanded={open}
         title={currentLabel}
       >
-        <ProductColorSwatch colorId={value} showNoColorWhenUnset size="md" />
+        <ProductColorSwatch colorId={value} showNoColorWhenUnset size="xs" />
         {showLabel && <span className="product-color-popover-trigger-label">{currentLabel}</span>}
       </button>
 

@@ -69,7 +69,7 @@ export function AdminContactPage() {
     setSaving(true);
 
     try {
-      const updated = await adminApi.updateContactSettings({ ...form, businessHours: '' });
+      const updated = await adminApi.updateContactSettings(form);
       setForm(updated);
       showAlert('Сохранено', 'Контактная информация обновлена.', 'success');
     } catch (err) {
@@ -120,6 +120,13 @@ export function AdminContactPage() {
               onChange={(event) => setForm((current) => ({ ...current, address: event.target.value }))}
               rows={2}
               required
+            />
+          </label>
+          <label>
+            Часы работы
+            <input
+              value={form.businessHours}
+              onChange={(event) => setForm((current) => ({ ...current, businessHours: event.target.value }))}
             />
           </label>
           <div className="form-actions">

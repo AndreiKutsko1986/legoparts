@@ -9,7 +9,7 @@ import { exportOrdersToCsv, exportOrdersToExcel } from './orderExport';
 import { useBulkSelection } from './useBulkSelection';
 import './AdminCompactForm.css';
 
-const statuses = ['Pending', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
+const statuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
 
 type OrderLineDraft = {
   productId: string;

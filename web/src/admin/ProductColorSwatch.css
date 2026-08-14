@@ -17,6 +17,11 @@
   box-sizing: border-box;
 }
 
+.product-color-swatch-xs {
+  width: 12px;
+  height: 12px;
+}
+
 .product-color-swatch-sm {
   width: 18px;
   height: 18px;
@@ -30,6 +35,11 @@
 .product-color-swatch-none {
   display: block;
   flex-shrink: 0;
+}
+
+.product-color-swatch-none.product-color-swatch-xs {
+  width: 12px;
+  height: 12px;
 }
 
 .product-color-swatch-none.product-color-swatch-sm {
@@ -111,4 +121,8 @@
 
 .admin-table-color-cell {
   text-align: center;
+}
+
+.product-color-popover-trigger {
+  padding: 0.325rem 0.5rem;
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Support\Pagination;
 use App\Support\ProductColors;
@@ -26,7 +27,7 @@ class AdminProductsController extends Controller
 
         $query  = Product::with('subCategory.category');
         $total  = $query->count();
-        $products = $query->orderByDesc('created_at')->skip($skip)->take($take)->get();
+        $products = $query->orderByDesc('created_at')->orderBy('id')->skip($skip)->take($take)->get();
 
         return response()->json(
             $products->map(fn (Product $p) => $this->mapProduct($p))->values()->all()
@@ -133,6 +134,11 @@ class AdminProductsController extends Controller
     public function destroy(string $id): Response|JsonResponse
     {
         $product = Product::findOrFail($id);
+        if (OrderItem::where('product_id', $id)->exists()) {
+            $product->is_active = false;
+            $product->save();
+            return response()->json(['message' => 'Товар деактивирован (есть связанные заказы).']);
+        }
         $product->delete();
         return response()->json(['message' => 'Товар удалён.']);
     }
@@ -140,7 +146,12 @@ class AdminProductsController extends Controller
     public function bulkDelete(Request $request): JsonResponse
     {
         return $this->bulkAction($request, function (Product $p) {
-            $p->delete();
+            if (OrderItem::where('product_id', $p->id)->exists()) {
+                $p->is_active = false;
+                $p->save();
+            } else {
+                $p->delete();
+            }
             return null;
         });
     }
