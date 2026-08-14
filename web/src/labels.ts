@@ -7,7 +7,7 @@ export const orderStatusLabels: Record<string, string> = {
 };
 
 export function formatPrice(value: number) {
-  return `${value.toFixed(2)} ₽`;
+  return `${value.toFixed(2)} BYN`;
 }
 
 export function formatDate(value: string) {

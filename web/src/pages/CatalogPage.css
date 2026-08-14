@@ -609,6 +609,13 @@
   padding-top: 0.2rem;
 }
 
+.catalog-product-price {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
 .catalog-add-row {
   display: flex;
   align-items: stretch;

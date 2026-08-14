@@ -9,6 +9,7 @@ import type { LayoutContext } from '../components/Layout';
 import { notifyCartUpdated } from '../components/Layout';
 import { productDisplayName, productMatchesColorFilter, resolveProductDisplayColor } from '../productColorFromName';
 import { addToCart, cartQuantityForProduct, clampProductQuantity, loadCart, reconcileCartLines, removeFromCart, saveCart, updateQuantity } from '../cart';
+import { formatPrice } from '../labels';
 import './CatalogPage.css';
 
 const useContainedWheel = () =>
@@ -610,6 +611,7 @@ export function CatalogPage() {
                         )}
                       </div>
                       <div className="catalog-product-footer">
+                        <span className="catalog-product-price">{formatPrice(product.price)}</span>
                         <div className="catalog-add-row">
                           {showQuantityControl ? (
                             <div
