@@ -4,9 +4,7 @@ namespace App\Providers;
 
 use App\Services\AdminAccessValidator;
 use App\Services\ProductImages\LocalDiskProductImageStorage;
-use App\Services\ProductImages\ProductImageStorageFactory;
 use App\Services\ProductImages\ProductImageUploadValidator;
-use App\Services\ProductImages\S3ProductImageStorage;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -18,8 +16,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ProductImageUploadValidator::class);
         $this->app->singleton(LocalDiskProductImageStorage::class);
-        $this->app->bind(S3ProductImageStorage::class);
-        $this->app->singleton(ProductImageStorageFactory::class);
         $this->app->singleton(AdminAccessValidator::class);
     }
 

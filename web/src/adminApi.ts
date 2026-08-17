@@ -142,20 +142,7 @@ export type Order = {
   }[];
 };
 
-export type ProductImageProvider = {
-  provider: string;
-  label: string;
-  description: string;
-  isAvailable: boolean;
-};
-
-export type ProductImageOptions = {
-  defaultProvider: string;
-  providers: ProductImageProvider[];
-};
-
 export type ProductImageUploadResult = {
-  provider: string;
   url: string;
   storageKey: string;
 };
@@ -371,8 +358,7 @@ export const adminApi = {
         popularityRating: payload.popularityRating,
       }),
     }),
-  getProductImageOptions: () => adminRequest<ProductImageOptions>('/api/admin/product-images/options'),
-  uploadProductImage: async (file: File, provider: string) => {
+  uploadProductImage: async (file: File) => {
     if (!sessionStorage.getItem(ADMIN_SESSION_MARKER)) {
       throw new Error('Требуется авторизация администратора.');
     }
@@ -380,14 +366,11 @@ export const adminApi = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(
-      `${API_BASE}/api/admin/product-images/upload?provider=${encodeURIComponent(provider)}`,
-      {
-        method: 'POST',
-        credentials: 'include',
-        body: formData,
-      },
-    );
+    const response = await fetch(`${API_BASE}/api/admin/product-images/upload`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    });
 
     if (response.status === 401) {
       sessionStorage.removeItem(ADMIN_SESSION_MARKER);

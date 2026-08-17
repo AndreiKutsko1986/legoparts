@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import type { AdminCategory, AdminProduct, AdminSubCategory, ProductImageOptions } from '../adminApi';
+import type { AdminCategory, AdminProduct, AdminSubCategory } from '../adminApi';
 import { adminApi, getAdminKey } from '../adminApi';
 import { BulkActionsBar, formatBulkResult } from './BulkActionsBar';
 import { AdminActiveStatusIcon } from './AdminActiveStatusIcon';
@@ -197,9 +197,7 @@ export function AdminProductsPage() {
   const [bulkUpdatePopularityEnabled, setBulkUpdatePopularityEnabled] = useState(false);
   const [bulkUpdatePopularity, setBulkUpdatePopularity] = useState('0');
   const [catalogLoading, setCatalogLoading] = useState(false);
-  const [imageOptions, setImageOptions] = useState<ProductImageOptions | null>(null);
   const [imageSource, setImageSource] = useState<'url' | 'upload'>('url');
-  const [imageProvider, setImageProvider] = useState('LocalDisk');
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedImageName, setSelectedImageName] = useState('');
   const [listFilterCategoryId, setListFilterCategoryId] = useState('');
@@ -340,19 +338,9 @@ export function AdminProductsPage() {
     }
   }, []);
 
-  const loadImageOptions = useCallback(async () => {
-    try {
-      const options = await adminApi.getProductImageOptions();
-      setImageOptions(options);
-      setImageProvider(options.defaultProvider);
-    } catch (err) {
-      showAlert('Ошибка', err instanceof Error ? err.message : 'Не удалось загрузить настройки изображений', 'error');
-    }
-  }, []);
-
   const load = useCallback(async () => {
-    await Promise.all([loadCatalog(), loadProducts(), loadImageOptions()]);
-  }, [loadCatalog, loadProducts, loadImageOptions]);
+    await Promise.all([loadCatalog(), loadProducts()]);
+  }, [loadCatalog, loadProducts]);
 
   useEffect(() => {
     void load();
@@ -397,9 +385,6 @@ export function AdminProductsPage() {
     }
   }, [listFilterSubCategoryId, listSubCategoryOptions]);
 
-  const selectedImageProvider = imageOptions?.providers.find((item) => item.provider === imageProvider);
-  const isSelectedProviderAvailable = selectedImageProvider?.isAvailable ?? true;
-
   if (!getAdminKey()) {
     return <Navigate to="/admin/login" replace />;
   }
@@ -423,7 +408,6 @@ export function AdminProductsPage() {
     setEditingId('');
     setImageSource('url');
     setSelectedImageName('');
-    setImageProvider(imageOptions?.defaultProvider ?? 'LocalDisk');
   };
 
   const handleTableRefresh = () => {
@@ -532,7 +516,7 @@ export function AdminProductsPage() {
     setSelectedImageName(file.name);
 
     try {
-      const result = await adminApi.uploadProductImage(file, imageProvider);
+      const result = await adminApi.uploadProductImage(file);
       setForm((current) => ({ ...current, imageUrl: result.url }));
       setImageSource('upload');
     } catch (err) {
@@ -957,30 +941,11 @@ export function AdminProductsPage() {
             ) : (
               <>
                 <label>
-                  Хранилище
-                  <select
-                    value={imageProvider}
-                    onChange={(e) => setImageProvider(e.target.value)}
-                    disabled={imageUploading || !imageOptions}
-                  >
-                    {(imageOptions?.providers ?? []).map((provider) => (
-                      <option key={provider.provider} value={provider.provider}>
-                        {provider.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                {selectedImageProvider?.description && (
-                  <p className={`field-hint${isSelectedProviderAvailable ? '' : ' error'}`}>
-                    {selectedImageProvider.description}
-                  </p>
-                )}
-                <label>
                   Файл изображения
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/gif"
-                    disabled={imageUploading || !isSelectedProviderAvailable}
+                    disabled={imageUploading}
                     onChange={(e) => void handleImageFileChange(e.target.files?.[0] ?? null)}
                   />
                 </label>

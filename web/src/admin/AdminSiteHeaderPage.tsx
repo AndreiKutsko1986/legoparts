@@ -1,6 +1,6 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
-import type { ProductImageOptions, SiteHeaderSettings } from '../adminApi';
+import type { SiteHeaderSettings } from '../adminApi';
 import { adminApi, getAdminKey } from '../adminApi';
 import { invalidateSiteHeaderCache } from '../siteHeader';
 import { AdminModal } from './AdminModal';
@@ -40,8 +40,6 @@ export function AdminSiteHeaderPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [modal, setModal] = useState<ModalState>(closedModal);
-  const [imageOptions, setImageOptions] = useState<ProductImageOptions | null>(null);
-  const [imageProvider, setImageProvider] = useState('LocalDisk');
   const [uploadingField, setUploadingField] = useState<ImageField | null>(null);
   const [selectedFileNames, setSelectedFileNames] = useState<Partial<Record<ImageField, string>>>({});
 
@@ -65,13 +63,8 @@ export function AdminSiteHeaderPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const [settings, options] = await Promise.all([
-          adminApi.getSiteHeaderSettings(),
-          adminApi.getProductImageOptions(),
-        ]);
+        const settings = await adminApi.getSiteHeaderSettings();
         setForm(settings);
-        setImageOptions(options);
-        setImageProvider(options.defaultProvider);
       } catch (err) {
         showAlert('Ошибка загрузки', err instanceof Error ? err.message : 'Не удалось загрузить настройки', 'error');
       } finally {
@@ -114,7 +107,7 @@ export function AdminSiteHeaderPage() {
     setSelectedFileNames((current) => ({ ...current, [field]: file.name }));
 
     try {
-      const result = await adminApi.uploadProductImage(file, imageProvider);
+      const result = await adminApi.uploadProductImage(file);
       setForm((current) => ({ ...current, [field]: result.url }));
     } catch (err) {
       showAlert('Ошибка загрузки', err instanceof Error ? err.message : 'Не удалось загрузить изображение', 'error');
@@ -128,9 +121,6 @@ export function AdminSiteHeaderPage() {
     setForm((current) => ({ ...current, [field]: null }));
     setSelectedFileNames((current) => ({ ...current, [field]: '' }));
   };
-
-  const selectedImageProvider = imageOptions?.providers.find((item) => item.provider === imageProvider);
-  const isSelectedProviderAvailable = selectedImageProvider?.isAvailable ?? true;
 
   const renderImageField = (
     field: ImageField,
@@ -149,7 +139,7 @@ export function AdminSiteHeaderPage() {
             type="file"
             accept={accept}
             onChange={(event) => void handleImageUpload(field, event)}
-            disabled={uploading || !isSelectedProviderAvailable}
+            disabled={uploading}
           />
         </label>
         <p className="field-hint">{hint}</p>
@@ -205,24 +195,6 @@ export function AdminSiteHeaderPage() {
           </label>
 
           <h2>Изображения</h2>
-          <label>
-            Хранилище загрузок
-            <select
-              value={imageProvider}
-              onChange={(event) => setImageProvider(event.target.value)}
-              disabled={!!uploadingField || !imageOptions}
-            >
-              {imageOptions?.providers.map((provider) => (
-                <option key={provider.provider} value={provider.provider} disabled={!provider.isAvailable}>
-                  {provider.label}
-                  {!provider.isAvailable ? ' (недоступно)' : ''}
-                </option>
-              ))}
-            </select>
-          </label>
-          {selectedImageProvider && !selectedImageProvider.isAvailable ? (
-            <p className="field-hint">{selectedImageProvider.description}</p>
-          ) : null}
 
           {renderImageField(
             'brandIconUrl',

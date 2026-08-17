@@ -89,7 +89,6 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::delete('/products/{id}', [AdminProductsController::class, 'destroy']);
 
     // Product images
-    Route::get('/product-images/options', [AdminProductImagesController::class, 'options']);
     Route::post('/product-images/upload', [AdminProductImagesController::class, 'upload']);
 
     // Orders
