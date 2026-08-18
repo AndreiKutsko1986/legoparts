@@ -11,17 +11,15 @@ export function SiteFooter() {
 
   return (
     <div className="footer-contacts">
+      <span className="footer-disclaimer">Все детали хоть и Б.У. но в очень хорошем состоянии. Все можно взять на тест. Цены на сайте носят исключительно информационный характер.</span>
       {contactInfo ? (
-        <>
-          <span>{contactInfo.storeName}</span>
-          <span>{contactInfo.address}</span>
-          <span>
-            <a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a>
-          </span>
-          <span>
-            <a href={`tel:${contactInfo.phone}`}>{contactInfo.phone}</a>
-          </span>
-        </>
+        <span>
+          {contactInfo.address}
+          {' · '}
+          <a href={`tel:${contactInfo.phone}`}>{contactInfo.phone}</a>
+          {' · '}
+          <a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a>
+        </span>
       ) : null}
     </div>
   );

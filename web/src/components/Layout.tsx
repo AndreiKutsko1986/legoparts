@@ -50,7 +50,6 @@ export function Layout() {
       </main>
       <footer className="footer">
         <div className="footer-main">
-          <span className="footer-brand">Распродажа комплектующих для робототехники! 🛠️</span>
           <SiteFooter />
         </div>
       </footer>

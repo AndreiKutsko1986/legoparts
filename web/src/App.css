@@ -102,34 +102,36 @@
 }
 
 .footer {
-  padding: 1rem 1.5rem;
+  padding: 0.4rem 1.5rem;
   background: var(--client-surface-gradient);
   background-color: var(--client-surface-solid);
   color: #94a3b8;
   border-top: 1px solid rgba(88, 81, 219, 0.18);
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 0.75rem 1.5rem;
+  gap: 0.25rem 1.5rem;
 }
 
 .footer-main {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.15rem;
   min-width: min(100%, 520px);
-}
-
-.footer-brand {
-  color: #94a3b8;
 }
 
 .footer-contacts {
   display: grid;
-  gap: 0.15rem;
-  font-size: 0.75rem;
-  line-height: 1.35;
+  gap: 0.1rem;
+  font-size: 0.7rem;
+  line-height: 1.3;
   color: #64748b;
+}
+
+.footer-disclaimer {
+  color: #ffffff;
+  font-style: italic;
+  font-size: 1.4rem;
 }
 
 .footer-contacts a {
