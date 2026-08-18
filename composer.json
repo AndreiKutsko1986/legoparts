@@ -4,7 +4,7 @@
     "description": "Legoparts API — Laravel / MySQL",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^12.61.1",
         "aws/aws-sdk-php": "^3.300"
     },
     "require-dev": {
@@ -51,11 +51,6 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
-        },
-        "policy": {
-            "advisories": {
-                "block": false
-            }
         }
     },
     "minimum-stability": "stable",
