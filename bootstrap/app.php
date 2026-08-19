@@ -14,7 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->trustProxies(at: '*');
+        // If behind a load balancer or reverse proxy, set its IP here instead of '*'
+        // e.g. $middleware->trustProxies(at: '203.0.113.5');
+        // On shared hosting with no proxy, this line can be removed entirely.
+        $middleware->trustProxies(at: '127.0.0.1');
 
         $middleware->alias([
             'admin.auth' => \App\Http\Middleware\AdminApiKeyMiddleware::class,
