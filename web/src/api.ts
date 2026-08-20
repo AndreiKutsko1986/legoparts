@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:5202';
+const API_BASE = import.meta.env.VITE_API_URL ?? 'https://legoparts.by';
 
 function buildHeaders(options?: RequestInit) {
   const headers: Record<string, string> = { ...(options?.headers as Record<string, string> | undefined) };

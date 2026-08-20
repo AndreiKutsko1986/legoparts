@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:5202';
+const API_BASE = import.meta.env.VITE_API_URL ?? 'https://legoparts.by';
 const ADMIN_SESSION_MARKER = 'legoparts-admin-session';
 
 function buildAdminHeaders(options?: RequestInit) {
