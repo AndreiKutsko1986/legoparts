@@ -18,6 +18,7 @@
 .env
 .env.backup
 .env.production
+!/web/.env.production
 .phpactor.json
 auth.json
 Homestead.json

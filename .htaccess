@@ -6,15 +6,15 @@
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 </IfModule>
 
-<IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
+Options +FollowSymLinks -MultiViews
+DirectoryIndex index.html index.php
 
+<IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Redirect HTTP to HTTPS
+    # Redirect HTTP to HTTPS (also handles reverse proxy forwarding)
     RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Block direct access to Laravel internals
