@@ -604,14 +604,14 @@ export function CatalogPage() {
                     <div className="catalog-product-content">
                       <span className="catalog-product-type">{product.subCategoryName}</span>
                       <h2 title={displayName}>{displayName}</h2>
+                      <div className="catalog-product-price-row">
+                        {product.price > 0
+                          ? <span className="catalog-product-price">{formatPrice(product.price)}</span>
+                          : <span className="catalog-product-out-of-stock">Нет в наличии</span>
+                        }
+                        <ProductColorIndicator colorId={displayColor} className="catalog-color-ring" />
+                      </div>
                       <div className="catalog-product-footer">
-                        <div className="catalog-product-price-row">
-                          {product.price > 0
-                            ? <span className="catalog-product-price">{formatPrice(product.price)}</span>
-                            : <span className="catalog-product-out-of-stock">Нет в наличии</span>
-                          }
-                          <ProductColorIndicator colorId={displayColor} className="catalog-color-ring" />
-                        </div>
                         <div className="catalog-add-row">
                           {showQuantityControl ? (
                             <div

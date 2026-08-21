@@ -13,14 +13,7 @@ export function SitePageHeader({ itemsInCart, cartToast }: SitePageHeaderProps) 
   const brandName = siteHeader?.brandName ?? 'Legoparts';
 
   return (
-    <header
-      className={`site-page-header${siteHeader?.heroImageUrl ? ' site-page-header--has-image' : ''}`}
-      style={
-        siteHeader?.heroImageUrl
-          ? ({ '--site-page-header-image': `url("${siteHeader.heroImageUrl}")` } as CSSProperties)
-          : undefined
-      }
-    >
+    <>
       <div className="site-page-header-top">
         <Link to="/" className="site-page-header-brand">
           <SiteBrandMark brandIconUrl={siteHeader?.brandIconUrl} />
@@ -45,13 +38,22 @@ export function SitePageHeader({ itemsInCart, cartToast }: SitePageHeaderProps) 
           </div>
         </nav>
       </div>
-      <div className="site-page-header-copy">
-        <h1>{siteHeader?.heroTitle ?? 'Каждая деталь. Каждый цвет.'}</h1>
-        <p>
-          {siteHeader?.heroSubtitle ??
-            'Крупнейший каталог отдельных элементов LEGO Education EV3 — от одиночных деталей до наборов для робототехники.'}
-        </p>
-      </div>
-    </header>
+      <header
+        className={`site-page-header${siteHeader?.heroImageUrl ? ' site-page-header--has-image' : ''}`}
+        style={
+          siteHeader?.heroImageUrl
+            ? ({ '--site-page-header-image': `url("${siteHeader.heroImageUrl}")` } as CSSProperties)
+            : undefined
+        }
+      >
+        <div className="site-page-header-copy">
+          <h1>{siteHeader?.heroTitle ?? 'Каждая деталь. Каждый цвет.'}</h1>
+          <p>
+            {siteHeader?.heroSubtitle ??
+              'Крупнейший каталог отдельных элементов LEGO Education EV3 — от одиночных деталей до наборов для робототехники.'}
+          </p>
+        </div>
+      </header>
+    </>
   );
 }

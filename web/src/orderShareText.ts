@@ -48,6 +48,15 @@ export function openTelegramShare(text: string) {
   window.open(webUrl, '_blank', 'noopener,noreferrer');
 }
 
-export function buildViberShareUrl(text: string) {
-  return `viber://forward?text=${encodeURIComponent(text)}`;
+export function openViberShare() {
+  // Viber's URL scheme does not support pre-filling message text,
+  // so the caller must copy the text to clipboard before calling this.
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    window.location.assign(`viber://chat?number=%2B${TELEGRAM_ORDER_PHONE}`);
+    return;
+  }
+
+  window.open(`viber://chat?number=%2B${TELEGRAM_ORDER_PHONE}`, '_blank', 'noopener,noreferrer');
 }

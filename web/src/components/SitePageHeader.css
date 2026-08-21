@@ -8,6 +8,20 @@
     radial-gradient(circle at 82% 18%, rgba(59, 130, 246, 0.16), transparent 34%),
     radial-gradient(circle at 62% 78%, rgba(88, 81, 219, 0.12), transparent 30%),
     linear-gradient(180deg, #162238 0%, #0b0f19 100%);
+}
+
+.site-page-header-top {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 1.25rem;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(88, 81, 219, 0.2), transparent 40%),
+    linear-gradient(180deg, #162238 0%, #0f1a2e 100%);
   border-bottom: 1px solid rgba(88, 81, 219, 0.22);
 }
 
@@ -15,13 +29,6 @@
   background:
     linear-gradient(180deg, rgba(22, 34, 56, 0.88) 0%, rgba(11, 15, 25, 0.92) 100%),
     var(--site-page-header-image) center / cover no-repeat;
-}
-
-.site-page-header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
 }
 
 .site-page-header-brand {
@@ -188,6 +195,7 @@
   .site-page-header-top {
     flex-direction: column;
     align-items: stretch;
+    padding: 0.55rem 1rem;
   }
 
   .site-page-header-nav {

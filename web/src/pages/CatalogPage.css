@@ -12,7 +12,7 @@
   --catalog-glow: rgba(88, 81, 219, 0.35);
   --catalog-text: #e8ecf4;
   --catalog-muted: #94a3b8;
-  --catalog-card-width: 200px;
+  --catalog-card-width: 180px;
   --catalog-card-height: 308px;
   --catalog-card-media-height: 136px;
   --catalog-card-in-cart-solid: #3a5680;
@@ -605,7 +605,7 @@
 }
 
 .catalog-product-footer {
-  padding-top: 0;
+  margin-top: auto;
 }
 
 .catalog-product-price-row {
@@ -702,7 +702,7 @@
 .catalog-add-btn {
   flex: 1;
   min-width: 0;
-  padding: 0.45rem 0.8rem;
+  padding: 0.45rem 0.5rem;
   border-radius: 0.45rem;
   background: var(--catalog-accent);
   color: #fff;
@@ -759,5 +759,18 @@
 
   .catalog-sort-select {
     flex: 1;
+  }
+
+  .catalog-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+
+  .catalog-product-card {
+    width: 100%;
+  }
+
+  .catalog-product-content {
+    padding: 0.5rem 0.55rem 0.6rem;
   }
 }

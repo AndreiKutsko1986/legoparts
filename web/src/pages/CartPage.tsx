@@ -15,7 +15,7 @@ import { notifyCartUpdated } from '../components/Layout';
 import { PopularProductsSidebar } from '../components/PopularProductsSidebar';
 import { usePopularProducts } from '../usePopularProducts';
 import { formatPrice } from '../labels';
-import { buildOrderShareText, buildViberShareUrl, openTelegramShare } from '../orderShareText';
+import { buildOrderShareText, openTelegramShare, openViberShare } from '../orderShareText';
 import { productDisplayName } from '../productColorFromName';
 import { productPath } from '../productPath';
 
@@ -178,11 +178,14 @@ export function CartPage() {
 
   if (lines.length === 0 && !orderShareText) {
     mainContent = (
-      <section>
-        <h1>Корзина</h1>
-        <p>Ваша корзина пуста.</p>
-        <Link to="/">Перейти в каталог</Link>
-      </section>
+      <>
+        <section>
+          <h1>Корзина</h1>
+          <p>Ваша корзина пуста.</p>
+          <Link to="/">Перейти в каталог</Link>
+        </section>
+        <PopularProductsSidebar products={popularProducts} />
+      </>
     );
   } else {
     mainContent = (
@@ -254,6 +257,7 @@ export function CartPage() {
                 <strong>{formatPrice(line.product.price * line.quantity)}</strong>
                 <button
                   type="button"
+                  className="cart-remove-btn"
                   onClick={() => handleRemove(line.product.id)}
                   disabled={Boolean(orderShareText)}
                 >
@@ -282,9 +286,21 @@ export function CartPage() {
               >
                 Telegram
               </button>
-              <a className="order-share-link" href={buildViberShareUrl(orderShareText)}>
+              <button
+                type="button"
+                className="order-share-link"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(orderShareText);
+                    setCopyFeedback('Текст заказа скопирован — вставьте его в чат Viber.');
+                  } catch {
+                    setCopyFeedback('Не удалось скопировать текст. Скопируйте его вручную и вставьте в Viber.');
+                  }
+                  openViberShare();
+                }}
+              >
                 Viber
-              </a>
+              </button>
             </div>
             {copyFeedback ? <p className="success">{copyFeedback}</p> : null}
             <div className="order-share-finish">
@@ -312,14 +328,10 @@ export function CartPage() {
           </form>
         )}
         </div>
+        <PopularProductsSidebar products={popularProducts} />
       </section>
     );
   }
 
-  return (
-    <div className="cart-page-layout">
-      <PopularProductsSidebar products={popularProducts} />
-      {mainContent}
-    </div>
-  );
+  return <>{mainContent}</>;
 }
