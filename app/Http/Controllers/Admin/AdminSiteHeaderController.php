@@ -23,13 +23,14 @@ class AdminSiteHeaderController extends Controller
     public function update(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'brandName'    => 'required|string|max:200',
-            'heroTitle'    => 'required|string|max:200',
-            'heroSubtitle' => 'nullable|string|max:4000',
-            'brandIconUrl' => 'nullable|string|max:1000',
-            'heroImageUrl' => 'nullable|string|max:1000',
-            'tabTitle'     => 'required|string|max:200',
-            'faviconUrl'   => 'nullable|string|max:1000',
+            'brandName'        => 'required|string|max:200',
+            'heroTitle'        => 'required|string|max:200',
+            'heroSubtitle'     => 'nullable|string|max:1000',
+            'footerDisclaimer' => 'nullable|string|max:1000',
+            'brandIconUrl'     => 'nullable|string|max:1000',
+            'heroImageUrl'     => 'nullable|string|max:1000',
+            'tabTitle'         => 'required|string|max:200',
+            'faviconUrl'       => 'nullable|string|max:1000',
         ]);
 
         $s = SiteHeaderSettings::firstOrNew(
@@ -41,13 +42,14 @@ class AdminSiteHeaderController extends Controller
             $s->id = SiteHeaderSettings::SINGLETON_ID;
         }
 
-        $s->brand_name    = trim($data['brandName']);
-        $s->hero_title    = trim($data['heroTitle']);
-        $s->hero_subtitle = isset($data['heroSubtitle']) ? trim($data['heroSubtitle']) : '';
-        $s->brand_icon_url = isset($data['brandIconUrl']) && trim($data['brandIconUrl']) !== '' ? trim($data['brandIconUrl']) : null;
-        $s->hero_image_url = isset($data['heroImageUrl']) && trim($data['heroImageUrl']) !== '' ? trim($data['heroImageUrl']) : null;
-        $s->tab_title     = trim($data['tabTitle']);
-        $s->favicon_url   = isset($data['faviconUrl']) && trim($data['faviconUrl']) !== '' ? trim($data['faviconUrl']) : null;
+        $s->brand_name         = trim($data['brandName']);
+        $s->hero_title         = trim($data['heroTitle']);
+        $s->hero_subtitle      = isset($data['heroSubtitle']) ? trim($data['heroSubtitle']) : '';
+        $s->footer_disclaimer  = isset($data['footerDisclaimer']) ? trim($data['footerDisclaimer']) : '';
+        $s->brand_icon_url     = isset($data['brandIconUrl']) && trim($data['brandIconUrl']) !== '' ? trim($data['brandIconUrl']) : null;
+        $s->hero_image_url     = isset($data['heroImageUrl']) && trim($data['heroImageUrl']) !== '' ? trim($data['heroImageUrl']) : null;
+        $s->tab_title          = trim($data['tabTitle']);
+        $s->favicon_url        = isset($data['faviconUrl']) && trim($data['faviconUrl']) !== '' ? trim($data['faviconUrl']) : null;
         $s->updated_at    = now();
         $s->save();
 

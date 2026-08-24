@@ -20,13 +20,14 @@ class SiteHeaderController extends Controller
     public static function mapSettings(SiteHeaderSettings $s): array
     {
         return [
-            'brandName'    => $s->brand_name,
-            'heroTitle'    => $s->hero_title,
-            'heroSubtitle' => $s->hero_subtitle,
-            'brandIconUrl' => $s->brand_icon_url,
-            'heroImageUrl' => $s->hero_image_url,
-            'tabTitle'     => $s->tab_title,
-            'faviconUrl'   => $s->favicon_url,
+            'brandName'         => $s->brand_name,
+            'heroTitle'         => $s->hero_title,
+            'heroSubtitle'      => $s->hero_subtitle,
+            'footerDisclaimer'  => $s->footer_disclaimer ?? '',
+            'brandIconUrl'      => $s->brand_icon_url,
+            'heroImageUrl'      => $s->hero_image_url,
+            'tabTitle'          => $s->tab_title,
+            'faviconUrl'        => $s->favicon_url,
         ];
     }
 }

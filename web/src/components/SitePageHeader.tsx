@@ -10,7 +10,7 @@ type SitePageHeaderProps = {
 
 export function SitePageHeader({ itemsInCart, cartToast }: SitePageHeaderProps) {
   const { settings: siteHeader } = useSiteHeader();
-  const brandName = siteHeader?.brandName ?? 'Legoparts';
+  const brandName = siteHeader?.brandName || 'Legoparts';
 
   return (
     <>
@@ -47,11 +47,8 @@ export function SitePageHeader({ itemsInCart, cartToast }: SitePageHeaderProps) 
         }
       >
         <div className="site-page-header-copy">
-          <h1>{siteHeader?.heroTitle ?? 'Каждая деталь. Каждый цвет.'}</h1>
-          <p>
-            {siteHeader?.heroSubtitle ??
-              'Крупнейший каталог отдельных элементов LEGO Education EV3 — от одиночных деталей до наборов для робототехники.'}
-          </p>
+          <h1>{siteHeader?.heroTitle}</h1>
+          <p>{siteHeader?.heroSubtitle}</p>
         </div>
       </header>
     </>

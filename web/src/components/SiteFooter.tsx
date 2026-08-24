@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import type { ContactInfo } from '../api';
 import { api } from '../api';
+import { useSiteHeader } from '../siteHeader';
 
 export function SiteFooter() {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
+  const { settings } = useSiteHeader();
 
   useEffect(() => {
     api.getContactInfo().then(setContactInfo).catch(() => setContactInfo(null));
@@ -11,7 +13,9 @@ export function SiteFooter() {
 
   return (
     <div className="footer-contacts">
-      <span className="footer-disclaimer">Все детали хоть и Б.У. но в очень хорошем состоянии. Все можно взять на тест. Цены на сайте носят исключительно информационный характер.</span>
+      {settings?.footerDisclaimer ? (
+        <span className="footer-disclaimer">{settings.footerDisclaimer}</span>
+      ) : null}
       {contactInfo ? (
         <span>
           {contactInfo.address}

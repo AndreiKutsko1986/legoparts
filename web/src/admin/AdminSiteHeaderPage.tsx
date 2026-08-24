@@ -10,6 +10,7 @@ const emptyForm: SiteHeaderSettings = {
   brandName: '',
   heroTitle: '',
   heroSubtitle: '',
+  footerDisclaimer: '',
   brandIconUrl: null,
   heroImageUrl: null,
   tabTitle: '',
@@ -191,6 +192,14 @@ export function AdminSiteHeaderPage() {
               onChange={(event) => setForm((current) => ({ ...current, heroSubtitle: event.target.value }))}
               rows={3}
               required
+            />
+          </label>
+          <label>
+            Дисклеймер в подвале
+            <textarea
+              value={form.footerDisclaimer}
+              onChange={(event) => setForm((current) => ({ ...current, footerDisclaimer: event.target.value }))}
+              rows={3}
             />
           </label>
 

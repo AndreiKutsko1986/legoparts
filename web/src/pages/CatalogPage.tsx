@@ -611,6 +611,7 @@ export function CatalogPage() {
                         }
                         <ProductColorIndicator colorId={displayColor} className="catalog-color-ring" />
                       </div>
+                      <p className="catalog-product-stock">кол-во на складе: {product.stockQuantity}</p>
                       <div className="catalog-product-footer">
                         <div className="catalog-add-row">
                           {showQuantityControl ? (

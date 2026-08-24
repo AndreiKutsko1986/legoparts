@@ -290,13 +290,10 @@ export function CartPage() {
                 type="button"
                 className="order-share-link"
                 onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(orderShareText);
+                  const result = await openViberShare(orderShareText);
+                  if (result === 'clipboard') {
                     setCopyFeedback('Текст заказа скопирован — вставьте его в чат Viber.');
-                  } catch {
-                    setCopyFeedback('Не удалось скопировать текст. Скопируйте его вручную и вставьте в Viber.');
                   }
-                  openViberShare();
                 }}
               >
                 Viber
