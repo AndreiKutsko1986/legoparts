@@ -12,7 +12,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('brand_name')->default('Legoparts');
             $table->string('hero_title')->default('Каждая деталь. Каждый цвет.');
-            $table->string('hero_subtitle')->default('');
+            $table->string('hero_subtitle', 1000)->default('');
             $table->string('brand_icon_url')->nullable();
             $table->string('hero_image_url')->nullable();
             $table->string('tab_title')->default('Legoparts — магазин деталей LEGO');

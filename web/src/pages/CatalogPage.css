@@ -496,6 +496,22 @@
   background-color: #314c72;
 }
 
+.catalog-product-media-link {
+  display: block;
+  flex-shrink: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.catalog-product-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.catalog-product-title-link:hover {
+  color: #c7d2fe;
+}
+
 .catalog-product-media {
   position: relative;
   display: flex;

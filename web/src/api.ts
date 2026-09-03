@@ -137,7 +137,8 @@ export type SiteHeaderSettings = {
   brandName: string;
   heroTitle: string;
   heroSubtitle: string;
-  footerDisclaimer: string;
+  promoBannerImageUrl: string | null;
+  promoBannerText: string;
   brandIconUrl: string | null;
   heroImageUrl: string | null;
   tabTitle: string;

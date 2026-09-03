@@ -12,6 +12,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::statement("ALTER TABLE site_header_settings MODIFY hero_subtitle VARCHAR(255) NOT NULL DEFAULT ''");
+        // Intentionally left empty: reverting column length could truncate live content.
     }
 };

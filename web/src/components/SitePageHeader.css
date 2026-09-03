@@ -95,12 +95,59 @@
   letter-spacing: -0.02em;
 }
 
-.site-page-header-copy p {
+.site-page-header-hero-row {
+  display: block;
+}
+
+.site-page-header-hero-row--with-promo {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.site-page-header-subtitle {
   margin: 0;
   max-width: 36rem;
   color: rgba(255, 255, 255, 0.82);
   font-size: 0.82rem;
   line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.site-page-header-hero-row--with-promo .site-page-header-subtitle {
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+}
+
+.site-page-header-promo {
+  flex: 0 0 auto;
+  width: min(220px, 38%);
+  overflow: hidden;
+  border: 1px solid rgba(139, 133, 255, 0.35);
+  border-radius: 0.55rem;
+  background: rgba(22, 34, 56, 0.72);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.site-page-header-promo-image {
+  display: block;
+  width: 100%;
+  max-height: 140px;
+  object-fit: cover;
+}
+
+.site-page-header-promo-text {
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.site-page-header-promo-image + .site-page-header-promo-text {
+  border-top: 1px solid rgba(139, 133, 255, 0.22);
 }
 
 .catalog-brand-mark {
@@ -200,5 +247,20 @@
 
   .site-page-header-nav {
     justify-content: flex-start;
+  }
+
+  .site-page-header-hero-row--with-promo {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .site-page-header-subtitle {
+    order: 1;
+    max-width: none;
+  }
+
+  .site-page-header-promo {
+    order: 2;
+    width: 100%;
   }
 }

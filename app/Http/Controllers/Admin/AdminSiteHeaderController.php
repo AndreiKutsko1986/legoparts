@@ -26,7 +26,8 @@ class AdminSiteHeaderController extends Controller
             'brandName'        => 'required|string|max:200',
             'heroTitle'        => 'required|string|max:200',
             'heroSubtitle'     => 'nullable|string|max:1000',
-            'footerDisclaimer' => 'nullable|string|max:1000',
+            'promoBannerImageUrl' => 'nullable|string|max:1000',
+            'promoBannerText'  => 'nullable|string|max:1000',
             'brandIconUrl'     => 'nullable|string|max:1000',
             'heroImageUrl'     => 'nullable|string|max:1000',
             'tabTitle'         => 'required|string|max:200',
@@ -45,7 +46,10 @@ class AdminSiteHeaderController extends Controller
         $s->brand_name         = trim($data['brandName']);
         $s->hero_title         = trim($data['heroTitle']);
         $s->hero_subtitle      = isset($data['heroSubtitle']) ? trim($data['heroSubtitle']) : '';
-        $s->footer_disclaimer  = isset($data['footerDisclaimer']) ? trim($data['footerDisclaimer']) : '';
+        $s->promo_banner_image_url = isset($data['promoBannerImageUrl']) && trim($data['promoBannerImageUrl']) !== ''
+            ? trim($data['promoBannerImageUrl'])
+            : null;
+        $s->promo_banner_text  = isset($data['promoBannerText']) ? trim($data['promoBannerText']) : '';
         $s->brand_icon_url     = isset($data['brandIconUrl']) && trim($data['brandIconUrl']) !== '' ? trim($data['brandIconUrl']) : null;
         $s->hero_image_url     = isset($data['heroImageUrl']) && trim($data['heroImageUrl']) !== '' ? trim($data['heroImageUrl']) : null;
         $s->tab_title          = trim($data['tabTitle']);

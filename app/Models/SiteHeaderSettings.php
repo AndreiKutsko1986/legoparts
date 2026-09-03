@@ -17,7 +17,8 @@ class SiteHeaderSettings extends Model
     protected $table = 'site_header_settings';
 
     protected $fillable = [
-        'id', 'brand_name', 'hero_title', 'hero_subtitle', 'footer_disclaimer',
+        'id', 'brand_name', 'hero_title', 'hero_subtitle',
+        'promo_banner_image_url', 'promo_banner_text',
         'brand_icon_url', 'hero_image_url', 'tab_title', 'favicon_url', 'updated_at',
     ];
 
@@ -32,7 +33,6 @@ class SiteHeaderSettings extends Model
             'brand_name'   => 'Legoparts',
             'hero_title'   => 'Скопилось много деталей, которые ищут новых хозяев!',
             'hero_subtitle'      => 'Обращаем ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой.',
-            'footer_disclaimer'  => 'Все детали хоть и Б.У. но в очень хорошем состоянии. Все можно взять на тест. Цены на сайте носят исключительно информационный характер.',
             'tab_title'    => 'Legoparts — Распродажа Б.У. деталей LEGO',
             'updated_at'   => now(),
         ];

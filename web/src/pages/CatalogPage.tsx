@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type WheelEvent } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import type { Product } from '../api';
 import { api } from '../api';
 import { PRODUCT_COLORS, type ProductColorId } from '../admin/productColors';
@@ -8,6 +8,7 @@ import { ProductColorIndicator } from '../components/ProductColorIndicator';
 import type { LayoutContext } from '../components/Layout';
 import { notifyCartUpdated } from '../components/Layout';
 import { productDisplayName, productMatchesColorFilter, resolveProductDisplayColor } from '../productColorFromName';
+import { productPath } from '../productPath';
 import { addToCart, cartQuantityForProduct, clampProductQuantity, loadCart, reconcileCartLines, removeFromCart, saveCart, updateQuantity } from '../cart';
 import { formatPrice } from '../labels';
 import './CatalogPage.css';
@@ -592,18 +593,22 @@ export function CatalogPage() {
                     key={product.id}
                     className={`catalog-product-card${inCart ? ' catalog-product-card--in-cart' : ''}`}
                   >
-                    <div className="catalog-product-media">
-
-
-                      {product.imageUrl ? (
-                        <img src={product.imageUrl} alt={displayName} />
-                      ) : (
-                        <div className="catalog-product-placeholder">Нет фото</div>
-                      )}
-                    </div>
+                    <Link to={productPath(product.id)} className="catalog-product-media-link">
+                      <div className="catalog-product-media">
+                        {product.imageUrl ? (
+                          <img src={product.imageUrl} alt={displayName} />
+                        ) : (
+                          <div className="catalog-product-placeholder">Нет фото</div>
+                        )}
+                      </div>
+                    </Link>
                     <div className="catalog-product-content">
                       <span className="catalog-product-type">{product.subCategoryName}</span>
-                      <h2 title={displayName}>{displayName}</h2>
+                      <h2 title={displayName}>
+                        <Link to={productPath(product.id)} className="catalog-product-title-link">
+                          {displayName}
+                        </Link>
+                      </h2>
                       <div className="catalog-product-price-row">
                         {product.price > 0
                           ? <span className="catalog-product-price">{formatPrice(product.price)}</span>

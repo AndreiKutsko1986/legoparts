@@ -29,3 +29,5 @@ yarn-error.log
 /.idea
 /.nova
 /.vscode
+/legoparts-production.zip
+/scripts/.staging/

@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { CatalogPage } from './pages/CatalogPage';
+import { ProductPage } from './pages/ProductPage';
 import { CartPage } from './pages/CartPage';
 import { NewsPage } from './pages/NewsPage';
 import { NewsDetailPage } from './pages/NewsDetailPage';
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<CatalogPage />} />
+          <Route path="products/:id" element={<ProductPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="news" element={<NewsPage />} />
           <Route path="news/:slug" element={<NewsDetailPage />} />

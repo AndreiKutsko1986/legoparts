@@ -10,7 +10,8 @@ const emptyForm: SiteHeaderSettings = {
   brandName: '',
   heroTitle: '',
   heroSubtitle: '',
-  footerDisclaimer: '',
+  promoBannerImageUrl: null,
+  promoBannerText: '',
   brandIconUrl: null,
   heroImageUrl: null,
   tabTitle: '',
@@ -31,7 +32,7 @@ type ModalState =
 
 const closedModal: ModalState = { open: false };
 
-type ImageField = 'brandIconUrl' | 'heroImageUrl' | 'faviconUrl';
+type ImageField = 'brandIconUrl' | 'heroImageUrl' | 'faviconUrl' | 'promoBannerImageUrl';
 
 const ICON_FILE_ACCEPT = 'image/svg+xml,image/png,image/webp,image/jpeg,.svg,.ico';
 const HERO_FILE_ACCEPT = 'image/jpeg,image/png,image/webp,image/gif';
@@ -147,7 +148,7 @@ export function AdminSiteHeaderPage() {
         {selectedFileNames[field] ? <p className="field-hint">Файл: {selectedFileNames[field]}</p> : null}
         {url ? (
           <div className="image-preview">
-            <img src={url} alt="" style={{ maxWidth: field === 'heroImageUrl' ? '240px' : '48px', maxHeight: '48px' }} />
+            <img src={url} alt="" style={{ maxWidth: field === 'heroImageUrl' || field === 'promoBannerImageUrl' ? '240px' : '48px', maxHeight: field === 'promoBannerImageUrl' ? '120px' : '48px' }} />
             <button type="button" className="secondary" onClick={() => clearImage(field)} disabled={uploading || saving}>
               Удалить
             </button>
@@ -190,16 +191,28 @@ export function AdminSiteHeaderPage() {
             <textarea
               value={form.heroSubtitle}
               onChange={(event) => setForm((current) => ({ ...current, heroSubtitle: event.target.value }))}
-              rows={3}
+              rows={5}
               required
             />
           </label>
+          <p className="field-hint">Переносы строк сохраняются и отображаются на сайте.</p>
+
+          <h2>Рекламный баннер</h2>
+          <p className="field-hint">
+            Отображается слева от подзаголовка на компьютере и под ним на телефоне. Если не заполнено — баннер скрыт.
+          </p>
+          {renderImageField(
+            'promoBannerImageUrl',
+            'Изображение баннера',
+            'Поддерживаются JPEG, PNG, WebP и GIF.',
+            HERO_FILE_ACCEPT,
+          )}
           <label>
-            Дисклеймер в подвале
+            Текст баннера
             <textarea
-              value={form.footerDisclaimer}
-              onChange={(event) => setForm((current) => ({ ...current, footerDisclaimer: event.target.value }))}
-              rows={3}
+              value={form.promoBannerText}
+              onChange={(event) => setForm((current) => ({ ...current, promoBannerText: event.target.value }))}
+              rows={4}
             />
           </label>
 

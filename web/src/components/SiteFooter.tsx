@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import type { ContactInfo } from '../api';
 import { api } from '../api';
-import { useSiteHeader } from '../siteHeader';
 
 export function SiteFooter() {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
-  const { settings } = useSiteHeader();
 
   useEffect(() => {
     api.getContactInfo().then(setContactInfo).catch(() => setContactInfo(null));
@@ -13,9 +11,6 @@ export function SiteFooter() {
 
   return (
     <div className="footer-contacts">
-      {settings?.footerDisclaimer ? (
-        <span className="footer-disclaimer">{settings.footerDisclaimer}</span>
-      ) : null}
       {contactInfo ? (
         <span>
           {contactInfo.address}

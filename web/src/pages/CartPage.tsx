@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
@@ -11,6 +11,7 @@ import {
   saveCart,
 } from '../cart';
 import type { CartLineWithProduct } from '../cart';
+import { AdminModal } from '../admin/AdminModal';
 import { notifyCartUpdated } from '../components/Layout';
 import { PopularProductsSidebar } from '../components/PopularProductsSidebar';
 import { usePopularProducts } from '../usePopularProducts';
@@ -19,6 +20,15 @@ import { buildOrderShareText, openTelegramShare, openViberShare } from '../order
 import { productDisplayName } from '../productColorFromName';
 import { productPath } from '../productPath';
 
+type CheckoutSnapshot = {
+  lines: CartLineWithProduct[];
+  customerName: string;
+  notes: string;
+};
+
+const ORDER_PLACEHOLDER_EMAIL = 'order@legoparts.by';
+const ORDER_PLACEHOLDER_ADDRESS = 'Связь через Telegram/Viber';
+
 export function CartPage() {
   const popularProducts = usePopularProducts();
   const [lines, setLines] = useState<CartLineWithProduct[]>([]);
@@ -26,10 +36,14 @@ export function CartPage() {
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [orderShareText, setOrderShareText] = useState('');
+  const [checkoutSnapshot, setCheckoutSnapshot] = useState<CheckoutSnapshot | null>(null);
+  const [shareModal, setShareModal] = useState<'copy' | 'messenger' | null>(null);
   const [copyFeedback, setCopyFeedback] = useState('');
   const [error, setError] = useState('');
   const [stockNotice, setStockNotice] = useState('');
   const [loading, setLoading] = useState(true);
+  const orderSubmittedRef = useRef(false);
+  const shareModalHandledRef = useRef(false);
 
   const applyHydratedLines = (hydrated: CartLineWithProduct[], adjusted = false) => {
     setLines(hydrated);
@@ -104,6 +118,12 @@ export function CartPage() {
         return;
       }
 
+      setCheckoutSnapshot({
+        lines: hydrated,
+        customerName: customerName.trim(),
+        notes: notes.trim(),
+      });
+      orderSubmittedRef.current = false;
       setOrderShareText(buildOrderShareText(hydrated, customerName, notes));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Не удалось подготовить заказ');
@@ -117,6 +137,56 @@ export function CartPage() {
     }
   };
 
+  const submitOrderToAdmin = async () => {
+    if (orderSubmittedRef.current || !checkoutSnapshot) {
+      return;
+    }
+
+    orderSubmittedRef.current = true;
+
+    try {
+      await api.createOrder({
+        customerName: checkoutSnapshot.customerName,
+        customerEmail: ORDER_PLACEHOLDER_EMAIL,
+        shippingAddress: ORDER_PLACEHOLDER_ADDRESS,
+        notes: checkoutSnapshot.notes || undefined,
+        items: checkoutSnapshot.lines.map((line) => ({
+          productId: line.product.id,
+          quantity: line.quantity,
+        })),
+      });
+    } catch (err) {
+      orderSubmittedRef.current = false;
+      setError(err instanceof Error ? err.message : 'Не удалось отправить заказ в админку');
+    }
+  };
+
+  const handleTelegramShare = () => {
+    if (!orderShareText) {
+      return;
+    }
+
+    void submitOrderToAdmin();
+    openTelegramShare(orderShareText);
+    shareModalHandledRef.current = false;
+    setShareModal('messenger');
+  };
+
+  const handleViberShare = async () => {
+    if (!orderShareText) {
+      return;
+    }
+
+    void submitOrderToAdmin();
+    const result = await openViberShare(orderShareText);
+    if (result === 'cancelled') {
+      return;
+    }
+
+    shareModalHandledRef.current = false;
+    setShareModal('messenger');
+  };
+
   const handleCopyOrderText = async () => {
     if (!orderShareText) {
       return;
@@ -124,9 +194,29 @@ export function CartPage() {
 
     try {
       await navigator.clipboard.writeText(orderShareText);
-      setCopyFeedback('Текст заказа скопирован.');
+      setCopyFeedback('');
+      shareModalHandledRef.current = false;
+      setShareModal('copy');
     } catch {
       setCopyFeedback('Не удалось скопировать текст. Выделите его вручную.');
+    }
+  };
+
+  const handleShareModalDismiss = async (clearCart: boolean) => {
+    if (shareModalHandledRef.current) {
+      return;
+    }
+
+    shareModalHandledRef.current = true;
+
+    if (shareModal === 'copy') {
+      await submitOrderToAdmin();
+    }
+
+    setShareModal(null);
+
+    if (clearCart) {
+      handleFinishOrder();
     }
   };
 
@@ -135,6 +225,10 @@ export function CartPage() {
     notifyCartUpdated();
     setLines([]);
     setOrderShareText('');
+    setCheckoutSnapshot(null);
+    orderSubmittedRef.current = false;
+    shareModalHandledRef.current = false;
+    setShareModal(null);
     setCustomerName('');
     setNotes('');
     setCopyFeedback('');
@@ -282,24 +376,20 @@ export function CartPage() {
               <button
                 type="button"
                 className="order-share-link"
-                onClick={() => openTelegramShare(orderShareText)}
+                onClick={handleTelegramShare}
               >
                 Telegram
               </button>
               <button
                 type="button"
                 className="order-share-link"
-                onClick={async () => {
-                  const result = await openViberShare(orderShareText);
-                  if (result === 'clipboard') {
-                    setCopyFeedback('Текст заказа скопирован — вставьте его в чат Viber.');
-                  }
-                }}
+                onClick={() => void handleViberShare()}
               >
                 Viber
               </button>
             </div>
             {copyFeedback ? <p className="success">{copyFeedback}</p> : null}
+            {error ? <p className="error">{error}</p> : null}
             <div className="order-share-finish">
               <button type="button" onClick={handleFinishOrder}>
                 Очистить корзину
@@ -330,5 +420,20 @@ export function CartPage() {
     );
   }
 
-  return <>{mainContent}</>;
+  return (
+    <>
+      {mainContent}
+      <AdminModal
+        open={shareModal !== null}
+        title={shareModal === 'copy' ? 'Текст скопирован' : 'Заказ отправлен'}
+        message={shareModal === 'messenger' ? 'Хотите очистить корзину?' : ''}
+        variant="success"
+        showCancel
+        cancelLabel="Закрыть"
+        confirmLabel="Очистить корзину"
+        onClose={() => void handleShareModalDismiss(false)}
+        onConfirm={() => void handleShareModalDismiss(true)}
+      />
+    </>
+  );
 }

@@ -6,20 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('site_header_settings', function (Blueprint $table) {
-            $table->string('footer_disclaimer', 1000)->default('')->after('hero_subtitle');
+            $table->string('promo_banner_image_url', 1000)->nullable()->after('hero_subtitle');
+            $table->string('promo_banner_text', 1000)->default('')->after('promo_banner_image_url');
         });
     }
 
     public function down(): void
     {
         Schema::table('site_header_settings', function (Blueprint $table) {
-            $table->dropColumn('footer_disclaimer');
+            $table->dropColumn(['promo_banner_image_url', 'promo_banner_text']);
         });
     }
 };

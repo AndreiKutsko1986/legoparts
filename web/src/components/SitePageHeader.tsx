@@ -11,6 +11,9 @@ type SitePageHeaderProps = {
 export function SitePageHeader({ itemsInCart, cartToast }: SitePageHeaderProps) {
   const { settings: siteHeader } = useSiteHeader();
   const brandName = siteHeader?.brandName || 'Legoparts';
+  const promoImageUrl = siteHeader?.promoBannerImageUrl?.trim() || '';
+  const promoText = siteHeader?.promoBannerText?.trim() || '';
+  const hasPromoBanner = promoImageUrl !== '' || promoText !== '';
 
   return (
     <>
@@ -48,7 +51,19 @@ export function SitePageHeader({ itemsInCart, cartToast }: SitePageHeaderProps) 
       >
         <div className="site-page-header-copy">
           <h1>{siteHeader?.heroTitle}</h1>
-          <p>{siteHeader?.heroSubtitle}</p>
+          <div className={`site-page-header-hero-row${hasPromoBanner ? ' site-page-header-hero-row--with-promo' : ''}`}>
+            {hasPromoBanner ? (
+              <aside className="site-page-header-promo" aria-label="Рекламный баннер">
+                {promoImageUrl ? (
+                  <img src={promoImageUrl} alt="" className="site-page-header-promo-image" />
+                ) : null}
+                {promoText ? <p className="site-page-header-promo-text">{promoText}</p> : null}
+              </aside>
+            ) : null}
+            {siteHeader?.heroSubtitle ? (
+              <p className="site-page-header-subtitle">{siteHeader.heroSubtitle}</p>
+            ) : null}
+          </div>
         </div>
       </header>
     </>

@@ -49,7 +49,7 @@ export function AdminModal({
         <h3 id="admin-modal-title" className="admin-modal-title">
           {title}
         </h3>
-        <p className="admin-modal-message">{message}</p>
+        {message ? <p className="admin-modal-message">{message}</p> : null}
         <div className="admin-modal-actions">
           {showCancel && (
             <button type="button" className="secondary" onClick={onClose}>
