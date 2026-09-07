@@ -439,11 +439,19 @@ export function CatalogPage() {
   };
 
   if (loading) {
-    return <p className="catalog-status">Загрузка каталога...</p>;
+    return (
+      <div className="catalog-page">
+        <p className="catalog-status">Загрузка каталога...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <p className="catalog-status error">{error}</p>;
+    return (
+      <div className="catalog-page">
+        <p className="catalog-status error">{error}</p>
+      </div>
+    );
   }
 
   return (

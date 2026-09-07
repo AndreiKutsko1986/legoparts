@@ -5,14 +5,26 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class OrderOperations
 {
-    public static function mapOrder(Order $order): array
+    /**
+     * @param  Collection<string, Product>|null  $productsById
+     */
+    public static function mapOrder(Order $order, ?Collection $productsById = null): array
     {
         $order->loadMissing('items');
+
+        if ($productsById === null) {
+            $productIds = $order->items->pluck('product_id')->unique()->filter()->all();
+            $productsById = Product::with('subCategory.category')
+                ->whereIn('id', $productIds)
+                ->get()
+                ->keyBy('id');
+        }
 
         return [
             'id'              => $order->id,
@@ -25,15 +37,47 @@ class OrderOperations
             'status'          => $order->status,
             'totalAmount'     => (float) $order->total_amount,
             'createdAt'       => $order->created_at->toIso8601String(),
-            'items'           => $order->items->map(fn (OrderItem $item) => [
-                'productId'   => $item->product_id,
-                'productName' => $item->product_name,
-                'productSku'  => $item->product_sku,
-                'quantity'    => $item->quantity,
-                'unitPrice'   => (float) $item->unit_price,
-                'lineTotal'   => $item->line_total,
-            ])->values()->all(),
+            'items'           => $order->items->map(function (OrderItem $item) use ($productsById) {
+                $product = $productsById->get($item->product_id);
+
+                return [
+                    'productId'       => $item->product_id,
+                    'productName'     => $item->product_name,
+                    'productNameRu'   => $product?->name_ru ?? '',
+                    'productSku'      => $item->product_sku,
+                    'partNumber'      => $product?->part_number ?? '',
+                    'categoryId'      => $product?->subCategory?->category_id ?? '',
+                    'categoryName'    => $product?->subCategory?->category?->name ?? '',
+                    'subCategoryId'   => $product?->sub_category_id ?? '',
+                    'subCategoryName' => $product?->subCategory?->name ?? '',
+                    'quantity'        => $item->quantity,
+                    'unitPrice'       => (float) $item->unit_price,
+                    'lineTotal'       => $item->line_total,
+                ];
+            })->values()->all(),
         ];
+    }
+
+    /**
+     * @param  Collection<int, Order>  $orders
+     */
+    public static function mapOrders(Collection $orders): array
+    {
+        $productIds = $orders
+            ->flatMap(fn (Order $order) => $order->items->pluck('product_id'))
+            ->unique()
+            ->filter()
+            ->all();
+
+        $productsById = Product::with('subCategory.category')
+            ->whereIn('id', $productIds)
+            ->get()
+            ->keyBy('id');
+
+        return $orders
+            ->map(fn (Order $order) => self::mapOrder($order, $productsById))
+            ->values()
+            ->all();
     }
 
     public static function createOrder(array $data): array
@@ -239,6 +283,30 @@ class OrderOperations
 
             return [$order, null];
         });
+    }
+
+    public static function bulkUpdateStatus(array $ids, string $newStatus): array
+    {
+        $uniqueIds = array_values(array_unique($ids));
+        $processed = 0;
+        $failed    = 0;
+        $errors    = [];
+        $orders    = [];
+
+        foreach ($uniqueIds as $id) {
+            [$order, $error] = self::updateStatus($id, $newStatus);
+
+            if ($error) {
+                $failed++;
+                $errors[] = $error;
+                continue;
+            }
+
+            $processed++;
+            $orders[] = $order;
+        }
+
+        return [$orders, $processed, $failed, $errors];
     }
 
     private static function recordSoldQuantities(Order $order): void

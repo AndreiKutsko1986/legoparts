@@ -84,6 +84,7 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::post('/products/bulk/activate', [AdminProductsController::class, 'bulkActivate']);
     Route::post('/products/bulk/deactivate', [AdminProductsController::class, 'bulkDeactivate']);
     Route::post('/products/bulk/update-fields', [AdminProductsController::class, 'bulkUpdateFields']);
+    Route::post('/products/import', [AdminProductsController::class, 'import']);
     Route::get('/products/{id}', [AdminProductsController::class, 'show']);
     Route::put('/products/{id}', [AdminProductsController::class, 'update']);
     Route::delete('/products/{id}', [AdminProductsController::class, 'destroy']);
@@ -94,6 +95,7 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     // Orders
     Route::get('/orders', [AdminOrdersController::class, 'index']);
     Route::post('/orders', [AdminOrdersController::class, 'store']);
+    Route::post('/orders/bulk/status', [AdminOrdersController::class, 'bulkUpdateStatus']);
     Route::get('/orders/{id}', [AdminOrdersController::class, 'show']);
     Route::patch('/orders/{id}/status', [AdminOrdersController::class, 'updateStatus']);
 });

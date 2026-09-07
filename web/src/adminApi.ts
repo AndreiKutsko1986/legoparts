@@ -135,7 +135,13 @@ export type Order = {
   items: {
     productId: string;
     productName: string;
+    productNameRu: string;
     productSku: string;
+    partNumber: string;
+    categoryId: string;
+    categoryName: string;
+    subCategoryId: string;
+    subCategoryName: string;
     quantity: number;
     unitPrice: number;
     lineTotal: number;
@@ -149,6 +155,13 @@ export type ProductImageUploadResult = {
 
 export type BulkActionResult = {
   processedCount: number;
+  failedCount: number;
+  errors: string[];
+};
+
+export type ProductImportResult = {
+  createdCount: number;
+  updatedCount: number;
   failedCount: number;
   errors: string[];
 };
@@ -360,6 +373,27 @@ export const adminApi = {
         popularityRating: payload.popularityRating,
       }),
     }),
+  importProducts: (rows: {
+    id?: string;
+    sku: string;
+    partNumber?: string;
+    name?: string;
+    nameRu?: string;
+    description?: string;
+    color?: string;
+    categoryName?: string;
+    subCategoryName?: string;
+    price?: number;
+    initialQuantity?: number;
+    stockQuantity?: number;
+    popularityRating?: number;
+    imageUrl?: string;
+    isActive?: boolean;
+  }[]) =>
+    adminRequest<ProductImportResult>('/api/admin/products/import', {
+      method: 'POST',
+      body: JSON.stringify({ rows }),
+    }),
   uploadProductImage: async (file: File) => {
     if (!sessionStorage.getItem(ADMIN_SESSION_MARKER)) {
       throw new Error('Требуется авторизация администратора.');
@@ -423,5 +457,10 @@ export const adminApi = {
     adminRequest<Order>(`/api/admin/orders/${id}/status`, {
       method: 'PATCH',
       body: JSON.stringify({ status }),
+    }),
+  bulkUpdateOrderStatus: (ids: string[], status: string) =>
+    adminRequest<BulkActionResult & { orders: Order[] }>('/api/admin/orders/bulk/status', {
+      method: 'POST',
+      body: JSON.stringify({ ids, status }),
     }),
 };

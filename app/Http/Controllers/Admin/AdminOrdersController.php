@@ -33,7 +33,7 @@ class AdminOrdersController extends Controller
         $orders = $query->orderByDesc('created_at')->skip($skip)->take($take)->get();
 
         return response()->json(
-            $orders->map(fn (Order $o) => OrderOperations::mapOrder($o))->values()->all()
+            OrderOperations::mapOrders($orders)
         )->header('X-Total-Count', $total);
     }
 
@@ -76,5 +76,26 @@ class AdminOrdersController extends Controller
         }
 
         return response()->json(OrderOperations::mapOrder($order));
+    }
+
+    public function bulkUpdateStatus(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'ids'    => 'required|array|min:1|max:200',
+            'ids.*'  => 'required|string',
+            'status' => 'required|string|in:Pending,Processing,Shipped,Delivered,Cancelled',
+        ]);
+
+        [$orders, $processed, $failed, $errors] = OrderOperations::bulkUpdateStatus(
+            $data['ids'],
+            $data['status'],
+        );
+
+        return response()->json([
+            'processedCount' => $processed,
+            'failedCount'    => $failed,
+            'errors'         => $errors,
+            'orders'         => OrderOperations::mapOrders(collect($orders)),
+        ]);
     }
 }

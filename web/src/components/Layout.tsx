@@ -43,7 +43,7 @@ export function Layout() {
   }, []);
 
   return (
-    <div className="app-shell app-shell-catalog">
+    <div className={`app-shell app-shell-catalog${isCatalogHome ? ' app-shell-catalog-fixed' : ''}`}>
       <SitePageHeader itemsInCart={itemsInCart} cartToast={cartToast} />
       <main className={isCatalogHome ? 'page page-catalog' : isSidebarPage ? 'page page-sidebar' : 'page'}>
         <Outlet context={{ itemsInCart, showCartToast }} />

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { FormEvent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import type { AdminCategory, AdminProduct, AdminSubCategory } from '../adminApi';
 import { adminApi, getAdminKey } from '../adminApi';
@@ -19,6 +19,11 @@ import { ProductColorPicker } from './ProductColorPicker';
 import { ProductColorPopoverPicker } from './ProductColorPopoverPicker';
 import { DEFAULT_PRODUCT_COLOR, parseStoredProductColor, type ProductColorId } from './productColors';
 import { productDisplayName, productDisplayNameEn, productDisplayNameRu, normalizeProductName } from '../productColorFromName';
+import {
+  exportProductsToExcel,
+  formatProductImportResult,
+  parseProductsSpreadsheet,
+} from './productSpreadsheet';
 import './AdminCompactForm.css';
 
 type ProductSortColumn = 'sku' | 'partNumber' | 'name' | 'nameRu' | 'description' | 'color' | 'categoryName' | 'subCategoryName' | 'price' | 'initialQuantity' | 'soldQuantity' | 'stockQuantity' | 'popularityRating' | 'isActive';
@@ -202,6 +207,8 @@ export function AdminProductsPage() {
   const [selectedImageName, setSelectedImageName] = useState('');
   const [listFilterCategoryId, setListFilterCategoryId] = useState('');
   const [listFilterSubCategoryId, setListFilterSubCategoryId] = useState('');
+  const [importLoading, setImportLoading] = useState(false);
+  const importInputRef = useRef<HTMLInputElement>(null);
   const { sortColumn, sortDirection, toggleSort, getSortIndicator, resetSort } = useTableSort<ProductSortColumn>('isActive', 'desc');
   const { tableRef, resetColumnWidths } = useAdminTableResize(ADMIN_TABLE_KEYS.products, ADMIN_PRODUCTS_COLUMN_WIDTHS);
   const handleTableWheel = useContainedTableWheel();
@@ -418,6 +425,72 @@ export function AdminProductsPage() {
     bulk.clear();
     setInlineEdits({});
     void loadProducts();
+  };
+
+  const handleExportProducts = () => {
+    if (displayedItems.length === 0) {
+      showAlert('Экспорт', 'Нет товаров для экспорта с текущими фильтрами.', 'warning');
+      return;
+    }
+
+    void exportProductsToExcel(displayedItems).catch((err: unknown) => {
+      showAlert('Экспорт', err instanceof Error ? err.message : 'Не удалось выгрузить Excel', 'error');
+    });
+  };
+
+  const handleImportButtonClick = () => {
+    importInputRef.current?.click();
+  };
+
+  const handleImportFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+
+    if (!file) {
+      return;
+    }
+
+    setImportLoading(true);
+
+    try {
+      const rows = await parseProductsSpreadsheet(file);
+      if (rows.length === 0) {
+        showAlert('Импорт', 'В файле не найдено строк с SKU для импорта.', 'warning');
+        return;
+      }
+
+      showConfirm(
+        'Импорт товаров',
+        `Будет обработано строк: ${rows.length}.\n\n` +
+          '• новые SKU будут добавлены\n' +
+          '• существующие (по ID или SKU) будут обновлены\n' +
+          '• товары, которых нет в файле, останутся в каталоге',
+        'Импортировать',
+        'warning',
+        () => {
+          void (async () => {
+            setImportLoading(true);
+            try {
+              const result = await adminApi.importProducts(rows);
+              await loadProducts();
+              showAlert(
+                'Импорт завершён',
+                formatProductImportResult(result),
+                result.failedCount > 0 ? 'warning' : 'success',
+              );
+            } catch (err) {
+              showAlert('Импорт', err instanceof Error ? err.message : 'Не удалось импортировать товары', 'error');
+            } finally {
+              setImportLoading(false);
+            }
+          })();
+        },
+      );
+    } catch (err) {
+      showAlert('Импорт', err instanceof Error ? err.message : 'Не удалось прочитать файл Excel', 'error');
+    } finally {
+      setImportLoading(false);
+    }
   };
 
   const setInlineField = (
@@ -1014,7 +1087,30 @@ export function AdminProductsPage() {
                 ))}
               </select>
             </label>
-            <AdminTableRefreshButton onClick={handleTableRefresh} disabled={loading || bulkLoading} />
+            <AdminTableRefreshButton onClick={handleTableRefresh} disabled={loading || bulkLoading || importLoading} />
+            <button
+              type="button"
+              className="secondary"
+              onClick={handleExportProducts}
+              disabled={loading || bulkLoading || importLoading || displayedItems.length === 0}
+            >
+              Excel
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              onClick={handleImportButtonClick}
+              disabled={loading || bulkLoading || importLoading}
+            >
+              {importLoading ? 'Импорт...' : 'Импорт Excel'}
+            </button>
+            <input
+              ref={importInputRef}
+              type="file"
+              accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
+              className="admin-products-import-input"
+              onChange={(event) => void handleImportFile(event)}
+            />
             <span className="admin-table-filters-count">
               Показано {displayedItems.length} из {items.length}
             </span>

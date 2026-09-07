@@ -1,5 +1,6 @@
 export const orderStatusLabels: Record<string, string> = {
   Pending: 'Ожидает',
+  Processing: 'В обработке',
   Confirmed: 'Подтверждён',
   Shipped: 'Отправлен',
   Delivered: 'Выполнен',

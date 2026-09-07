@@ -87,11 +87,27 @@
   background-color: var(--client-bg-solid);
 }
 
+.app-shell-catalog-fixed {
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+html:has(.app-shell-catalog-fixed),
+html:has(.app-shell-catalog-fixed) body {
+  height: 100%;
+  overflow: hidden;
+}
+
 .page-catalog {
   width: 100%;
   max-width: none;
   margin: 0;
   padding: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-sidebar {
@@ -473,6 +489,153 @@
   color: rgba(255, 255, 255, 0.78);
 }
 
+.admin-orders-page .admin-table-filters input[type='search'],
+.admin-orders-page .admin-table-filters input:not([type='checkbox']) {
+  min-width: 220px;
+}
+
+.admin-orders-bulk-bar {
+  border-top: 1px solid #e2e8f0;
+}
+
+.admin-orders-export-error {
+  margin: 0;
+  padding: 0.5rem 1rem;
+}
+
+.admin-orders-row-selected {
+  background: #f8fafc;
+}
+
+.admin-orders-row-selected:hover {
+  background: #f1f5f9;
+}
+
+.admin-orders-part-number {
+  display: block;
+  font-size: 0.82rem;
+}
+
+.admin-orders-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.admin-orders-page .admin-table th.admin-table-numeric-col,
+.admin-orders-page .admin-table td.admin-table-numeric-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.admin-orders-page .admin-table-wrap,
+.admin-orders-page .admin-table-scroll {
+  overflow-x: hidden;
+}
+
+.admin-orders-page .admin-orders-table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+  font-size: 0.78rem;
+}
+
+.admin-orders-page .admin-orders-table th,
+.admin-orders-page .admin-orders-table td {
+  padding: 0.35rem 0.45rem;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.admin-orders-page .admin-orders-table .sortable-header {
+  font-size: 0.72rem;
+  line-height: 1.2;
+  white-space: normal;
+  text-align: left;
+}
+
+.admin-orders-page .admin-orders-table .checkbox-cell {
+  width: 2rem;
+  padding-left: 0.35rem;
+  padding-right: 0.2rem;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(2),
+.admin-orders-page .admin-orders-table td:nth-child(2) {
+  width: 7%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(3),
+.admin-orders-page .admin-orders-table td:nth-child(3) {
+  width: 8%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(4),
+.admin-orders-page .admin-orders-table td:nth-child(4) {
+  width: 11%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(5),
+.admin-orders-page .admin-orders-table td:nth-child(5) {
+  width: 8%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(6),
+.admin-orders-page .admin-orders-table td:nth-child(6) {
+  width: 6%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(7),
+.admin-orders-page .admin-orders-table td:nth-child(7) {
+  width: 8%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(8),
+.admin-orders-page .admin-orders-table td:nth-child(8) {
+  width: 8%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(9),
+.admin-orders-page .admin-orders-table td:nth-child(9) {
+  width: 6%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(10),
+.admin-orders-page .admin-orders-table td:nth-child(10) {
+  width: 12%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(11),
+.admin-orders-page .admin-orders-table td:nth-child(11),
+.admin-orders-page .admin-orders-table th:nth-child(12),
+.admin-orders-page .admin-orders-table td:nth-child(12),
+.admin-orders-page .admin-orders-table th:nth-child(13),
+.admin-orders-page .admin-orders-table td:nth-child(13) {
+  width: 5%;
+}
+
+.admin-orders-page .admin-orders-table th:nth-child(14),
+.admin-orders-page .admin-orders-table td:nth-child(14) {
+  width: 9%;
+}
+
+.admin-orders-page .admin-orders-table .admin-table-truncate {
+  display: block;
+  max-width: 100%;
+}
+
+.admin-orders-page .admin-orders-status-select {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.25rem;
+}
+
+.admin-order-group-divider td {
+  border-top: 2px solid #e2e8f0;
+}
+
 .bulk-actions-bar {
   display: flex;
   flex-wrap: wrap;
@@ -513,6 +676,10 @@
 
 .product-bulk-update-title {
   font-weight: 600;
+}
+
+.admin-products-import-input {
+  display: none;
 }
 
 .product-bulk-update-field {

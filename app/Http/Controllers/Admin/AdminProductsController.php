@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\ProductImportOperations;
 use App\Support\Pagination;
 use App\Support\ProductColors;
 use Illuminate\Http\JsonResponse;
@@ -221,6 +222,32 @@ class AdminProductsController extends Controller
         }
 
         return response()->json(['processedCount' => $processed, 'failedCount' => $failed, 'errors' => $errors]);
+    }
+
+    public function import(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'rows'                    => 'required|array|min:1|max:500',
+            'rows.*.id'               => 'nullable|string|max:36',
+            'rows.*.sku'              => 'required|string|max:200',
+            'rows.*.partNumber'       => 'nullable|string|max:200',
+            'rows.*.name'             => 'nullable|string|max:200',
+            'rows.*.nameRu'           => 'nullable|string|max:200',
+            'rows.*.description'      => 'nullable|string|max:4000',
+            'rows.*.color'            => 'nullable|string|max:200',
+            'rows.*.categoryName'     => 'nullable|string|max:200',
+            'rows.*.subCategoryName'  => 'nullable|string|max:200',
+            'rows.*.price'            => 'nullable|numeric|min:0',
+            'rows.*.initialQuantity'  => 'nullable|integer|min:0',
+            'rows.*.stockQuantity'    => 'nullable|integer|min:0',
+            'rows.*.popularityRating' => 'nullable|integer|min:0|max:9999',
+            'rows.*.imageUrl'         => 'nullable|string|max:1000',
+            'rows.*.isActive'         => 'nullable|boolean',
+        ]);
+
+        $result = ProductImportOperations::importRows($data['rows']);
+
+        return response()->json($result);
     }
 
     private function mapProduct(Product $p): array
